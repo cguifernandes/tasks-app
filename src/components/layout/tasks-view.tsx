@@ -10,9 +10,11 @@ import {
 } from "../ui/empty";
 import { Button } from "../ui/button";
 import { useModal } from "@/context/modal-provider";
+import { useUser } from "@/context/user-provider";
 
 const TasksView = () => {
   const { openModal } = useModal();
+  const { isAuthenticated } = useUser();
   return (
     <Card>
       <Empty>
@@ -28,16 +30,19 @@ const TasksView = () => {
         </EmptyHeader>
         <EmptyContent>
           <div className="flex gap-2 w-full">
-            <Button className="flex-1" onClick={() => openModal("login")}>
-              Login
-            </Button>
-            <Button
-              className="flex-1"
-              variant="outline"
-              onClick={() => openModal("createTask")}
-            >
-              Criar Tarefa
-            </Button>
+            {isAuthenticated ? (
+              <Button
+                className="flex-1"
+                variant="outline"
+                onClick={() => openModal("createTask")}
+              >
+                Criar Tarefa
+              </Button>
+            ) : (
+              <Button className="flex-1" onClick={() => openModal("login")}>
+                Login
+              </Button>
+            )}
           </div>
         </EmptyContent>
       </Empty>

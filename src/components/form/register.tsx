@@ -5,14 +5,16 @@ import { Label } from "../ui/label";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { useModal } from "@/context/modal-provider";
+import { useUser } from "@/context/user-provider";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState<null | string>(null);
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { closeModal } = useModal();
+  const { register } = useUser();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,37 +30,24 @@ const Register = () => {
     }
 
     setError(null);
-
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8080/auth/register", {
-        method: "POST",
-        body: JSON.stringify({ name, password }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message);
-        return;
-      }
-
+      await register(name, password);
       toast.success("Usuário registrado com sucesso");
       closeModal();
     } catch (error) {
-      toast.error("Erro ao registrar um novo usuário");
-      console.error(error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Erro ao registrar";
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex relative p-3 flex-col gap-4">
+    <form onSubmit={handleSubmit} className="flex relative flex-col gap-4">
       {isLoading && (
         <div className="absolute inset-0 bg-background/80 flex items-center justify-center">
           <Loader2Icon className="size-10 text-primary animate-spin" />
