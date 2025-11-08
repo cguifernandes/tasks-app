@@ -6,15 +6,16 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import CreateTask from "../form/create-task";
+import { useModal } from "@/context/modal-provider";
 
-interface CreateTaskModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
+const CreateTaskModal = () => {
+  const { isModalOpen, closeModal } = useModal();
 
-const CreateTaskModal = ({ open, onOpenChange }: CreateTaskModalProps) => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={isModalOpen("createTask")}
+      onOpenChange={(open) => !open && closeModal()}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Criar Nova Tarefa</DialogTitle>

@@ -1,11 +1,13 @@
-import { useState } from "react";
 import { Button } from "./components/ui/button";
 import Header from "./components/layout/header";
 import TasksView from "./components/layout/tasks-view";
-import CreateTaskModal from "./components/layout/create-task-modal";
+import CreateTaskModal from "./components/modals/create-task-modal";
+import LoginModal from "./components/modals/login-modal";
+import RegisterModal from "./components/modals/register-modal";
+import { useModal } from "./context/modal-provider";
 
 const App = () => {
-  const [createTaskModalOpen, setCreateTaskModalOpen] = useState(false);
+  const { openModal } = useModal();
 
   return (
     <main className="min-h-screen bg-background">
@@ -19,17 +21,16 @@ const App = () => {
             </p>
           </div>
           <div className="flex items-center gap-6">
-            <Button onClick={() => setCreateTaskModalOpen(true)}>
+            <Button onClick={() => openModal("createTask")}>
               Adicionar Tarefa
             </Button>
           </div>
         </div>
         <TasksView />
       </div>
-      <CreateTaskModal
-        open={createTaskModalOpen}
-        onOpenChange={setCreateTaskModalOpen}
-      />
+      <CreateTaskModal />
+      <LoginModal />
+      <RegisterModal />
     </main>
   );
 };
