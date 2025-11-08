@@ -23,14 +23,16 @@ export type UserContextType = {
 
 export type Task = {
   id: string;
+  completed: boolean;
   title: string;
   description: string;
   created_at: string;
   user_id: string;
+  user?: User;
 };
 
 export type TaskResponse = {
-  task: Task;
+  tasks: Task[];
   message: string;
   ok: boolean;
 };

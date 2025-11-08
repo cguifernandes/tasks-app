@@ -14,7 +14,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  console.log({ user });
 
   useEffect(() => {
     const loadUserFromStorage = () => {
